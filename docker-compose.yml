@@ -1,0 +1,25 @@
+
+services:
+  djang-ecommerce-backend:
+    build: ./backend
+    container_name: djang-ecommerce-backend
+    ports:
+      - 8000:8000
+    # environment:
+    #   - REDIS_HOST=redis://odoo-redis:6379/0
+    command: ["python", "manage.py", "runserver", "0.0.0.0:8000"]
+    volumes:
+      - type: bind
+        source: ./backend
+        target: /app/django-ecommerce
+    depends_on:
+      - django-ecommerce-db
+
+  django-ecommerce-db:
+    container_name: djang-ecommerce-db
+    image: postgres:17
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: 1234567890
+    ports:
+      - 5433:5433
